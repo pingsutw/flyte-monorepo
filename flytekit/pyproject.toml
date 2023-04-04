@@ -1,0 +1,18 @@
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.pytest.ini_options]
+norecursedirs = ["common", "workflows", "spark", "fsspec"]
+log_cli = true
+log_cli_level = 20
+markers = [
+    # unit tests that are really integration tests that run on a sandbox environment
+    "sandbox_test: fake integration tests",
+]
+
+[tool.coverage.run]
+branch = true
