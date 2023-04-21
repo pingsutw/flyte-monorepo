@@ -1,6 +1,10 @@
 name: Checks Flyte Components
 
-on: push
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 env:
   GO_VERSION: "1.19"
