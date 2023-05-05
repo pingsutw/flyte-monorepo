@@ -1,6 +1,7 @@
 export REPOSITORY=datacatalog
-include boilerplate/flyte/docker_build/Makefile
-include boilerplate/flyte/golang_test_targets/Makefile
+include ../boilerplate/flyte/docker_build/Makefile
+include ../boilerplate/flyte/golang_test_targets/Makefile
+include ../boilerplate/flyte/end2end/Makefile
 
 .PHONY: update_boilerplate
 update_boilerplate:
@@ -15,7 +16,3 @@ compile:
 .PHONY: linux_compile
 linux_compile:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /artifacts/datacatalog ./cmd/
-
-.PHONY: generate
-generate:
-	@go generate ./...

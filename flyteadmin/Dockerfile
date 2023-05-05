@@ -21,16 +21,12 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.4.11 && \
     echo 'ded15e598d887ccc47bf2321371950bbf930f5e4856b9f75712ce4b2b5120480  /artifacts/grpc_health_probe' > .grpc_checksum && \
     sha256sum -c .grpc_checksum
 
-# COPY only the go mod files for efficient caching
-COPY go.mod go.sum /go/src/github.com/flyteorg/flyteadmin/
-WORKDIR /go/src/github.com/flyteorg/flyteadmin
+COPY . /go/src/github.com/flyteorg/flyte/
+WORKDIR /go/src/github.com/flyteorg/flyte/flyteadmin
 
 # Pull dependencies
 RUN go mod download
 
-
-# COPY the rest of the source code
-COPY . /go/src/github.com/flyteorg/flyteadmin/
 
 # This 'linux_compile' target should compile binaries to the /artifacts directory
 # The main entrypoint should be compiled to /artifacts/flyteadmin
@@ -41,7 +37,7 @@ ENV PATH="/artifacts:${PATH}"
 
 # This will eventually move to centurylink/ca-certs:latest for minimum possible image size
 FROM alpine:3.16
-LABEL org.opencontainers.image.source https://github.com/flyteorg/flyteadmin
+LABEL org.opencontainers.image.source=https://github.com/flyteorg/flyteadmin
 
 COPY --from=builder /artifacts /bin
 

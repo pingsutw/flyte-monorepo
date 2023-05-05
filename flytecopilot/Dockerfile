@@ -7,14 +7,11 @@ FROM golang:1.18-alpine3.16 as builder
 RUN apk add git openssh-client make curl
 
 # COPY only the go mod files for efficient caching
-COPY go.mod go.sum /go/src/github.com/lyft/flyteplugins/
-WORKDIR /go/src/github.com/lyft/flyteplugins
+COPY . /go/src/github.com/flyteorg/flyte/
+WORKDIR /go/src/github.com/flyteorg/flyte/flytecopilot
 
 # Pull dependencies
 RUN go mod download
-
-# COPY the rest of the source code
-COPY . /go/src/github.com/lyft/flyteplugins/
 
 # This 'linux_compile' target should compile binaries to the /artifacts directory
 # The main entrypoint should be compiled to /artifacts/flyteplugins
@@ -25,7 +22,7 @@ ENV PATH="/artifacts:${PATH}"
 
 # This will eventually move to centurylink/ca-certs:latest for minimum possible image size
 FROM alpine:3.16
-LABEL org.opencontainers.image.source https://github.com/lyft/flyteplugins
+LABEL org.opencontainers.image.source https://github.com/lyft/flytecopilot
 
 COPY --from=builder /artifacts /bin
 

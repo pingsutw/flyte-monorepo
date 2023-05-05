@@ -1,13 +1,12 @@
 # WARNING: THIS FILE IS MANAGED IN THE 'BOILERPLATE' REPO AND COPIED TO OTHER REPOSITORIES.
 # ONLY EDIT THIS FILE FROM WITHIN THE 'FLYTEORG/BOILERPLATE' REPOSITORY:
-#
+# 
 # TO OPT OUT OF UPDATES, SEE https://github.com/flyteorg/boilerplate/blob/master/Readme.rst
 
+.PHONY: docker_build
+docker_build:
+	IMAGE_NAME=$$REPOSITORY ../boilerplate/flyte/docker_build/docker_build.sh
 
-.PHONY: end2end_execute
-end2end_execute:
-	../boilerplate/flyte/end2end/end2end.sh ../boilerplate/flyte/end2end/functional-test-config.yaml --return_non_zero_on_failure
-
-.PHONY: k8s_integration_execute
-k8s_integration_execute:
-	echo "pass"
+.PHONY: dockerhub_push
+dockerhub_push:
+	IMAGE_NAME=flyteorg/$$REPOSITORY REGISTRY=docker.io ../boilerplate/flyte/docker_build/docker_build.sh

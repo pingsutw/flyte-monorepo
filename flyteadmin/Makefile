@@ -1,8 +1,8 @@
 export REPOSITORY=flyteadmin
 export FLYTE_SCHEDULER_REPOSITORY=flytescheduler
-include boilerplate/flyte/docker_build/Makefile
-include boilerplate/flyte/golang_test_targets/Makefile
-include boilerplate/flyte/end2end/Makefile
+include ../boilerplate/flyte/docker_build/Makefile
+include ../boilerplate/flyte/golang_test_targets/Makefile
+include ../boilerplate/flyte/end2end/Makefile
 
 GIT_VERSION := $(shell git describe --always --tags)
 GIT_HASH := $(shell git rev-parse --short HEAD)
@@ -11,14 +11,9 @@ PACKAGE ?=github.com/flyteorg/flytestdlib
 
 LD_FLAGS="-s -w -X $(PACKAGE)/version.Version=$(GIT_VERSION) -X $(PACKAGE)/version.Build=$(GIT_HASH) -X $(PACKAGE)/version.BuildTime=$(TIMESTAMP)"
 
-.PHONY: update_boilerplate
-update_boilerplate:
-	@curl https://raw.githubusercontent.com/flyteorg/boilerplate/master/boilerplate/update.sh -o boilerplate/update.sh
-	@boilerplate/update.sh
-
 .PHONY: docker_build_scheduler
 docker_build_scheduler:
-	docker build -t $$FLYTE_SCHEDULER_REPOSITORY:$(GIT_HASH) -f Dockerfile.scheduler .
+	docker build -t $$FLYTE_SCHEDULER_REPOSITORY:$(GIT_HASH) -f scheduler.Dockerfile .
 
 .PHONY: integration
 integration:

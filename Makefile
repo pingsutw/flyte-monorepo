@@ -1,5 +1,4 @@
 export REPOSITORY=flyte
-include boilerplate/flyte/end2end/Makefile
 
 define PIP_COMPILE
 pip-compile $(1) --upgrade --verbose --resolver=backtracking
@@ -102,3 +101,12 @@ build_native_flyte:
 	docker build \
 	--build-arg FLYTECONSOLE_VERSION=$(FLYTECONSOLE_VERSION) \
 	--tag flyte-binary:native .
+
+.PHONY: update_boilerplate
+update_boilerplate:
+	@curl https://raw.githubusercontent.com/flyteorg/boilerplate/master/boilerplate/update.sh -o boilerplate/update.sh
+	@boilerplate/update.sh
+
+.PHONY: end2end_execute
+end2end_execute:
+	@boilerplate/flyte/end2end/end2end.sh boilerplate/flyte/end2end/functional-test-config.yaml --return_non_zero_on_failure

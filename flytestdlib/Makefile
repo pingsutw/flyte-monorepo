@@ -1,5 +1,6 @@
 export REPOSITORY=flytestdlib
-include boilerplate/flyte/golang_test_targets/Makefile
+include ../boilerplate/flyte/golang_test_targets/Makefile
+include ../boilerplate/flyte/end2end/Makefile
 
 .PHONY: update_boilerplate
 update_boilerplate:
@@ -12,11 +13,6 @@ golden:
 	go test ./config -update
 	go test ./storage -update
 	go test ./tests -update
-
-
-generate:
-	@echo "************************ go generate **********************************"
-	go generate ./...
 
 # This is the only target that should be overriden by the project. Get your binary into ${GOREPO}/bin
 .PHONY: compile
